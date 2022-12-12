@@ -1,4 +1,3 @@
-import numpy as np
 advent_input = open('day_7/input.txt')
 a_list = list(advent_input)
 advent_input.close()
