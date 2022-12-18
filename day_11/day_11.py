@@ -30,8 +30,8 @@ class Monkey:
         elif self.operation[1] == '+':
             return (int(old) + value)
 
-    def output(self, old):
-        new = self.operation_execution(old)  # // 3 For part 1
+    def output(self, old, product):
+        new = self.operation_execution(old) % product  # // 3 For part 1
         self.inspection_items += 1
 
         if new % int(self.test[0]) == 0:
@@ -54,6 +54,10 @@ for monkey in monkey_data:
     monkeys.append(Monkey(monkey[1], monkey[2],
                    monkey[3], monkey[4], monkey[5], 0))
 
+product = 1
+for monkey in monkeys:
+    product *= int(monkey.test[0])
+
 
 for round in tqdm(range(0, 10000), desc='tqdm() Progress Bar'):
     gc.collect()
@@ -61,17 +65,20 @@ for round in tqdm(range(0, 10000), desc='tqdm() Progress Bar'):
         delete = []
 
         for item in monkey.starting_items:
-            value, index = monkey.output(item)
+            value, index = monkey.output(item, product)
             monkeys[index].starting_items.append(value)
             delete.append(item)
 
         monkey.starting_items = [
             elem for elem in monkey.starting_items if elem not in delete]
 
-
+values = []
 for monkey in monkeys:
-    print(monkey.inspection_items)
+    values.append(monkey.inspection_items)
 
-# print(254 * 263)
+#print(254 * 263)
 
 # Part 2
+values.sort(reverse=True)
+
+print(values[0:2])
